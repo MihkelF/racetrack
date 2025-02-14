@@ -1,6 +1,12 @@
+import { useEffect } from "react";
 import "./race-control.css";
+import { io } from "socket.io-client";
 
 function RaceControl() {
+  useEffect(() => {
+    const socket = io("http://localhost:4000");
+  }, []);
+
   return (
     <div>
       <button className="flag-button" id="safe">
