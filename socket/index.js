@@ -7,7 +7,9 @@ const io = new Server({
 });
 
 io.on("connection", (socket) => {
-  console.log("someone has connected!");
+  socket.on("changeFlag", (flagType) => {
+    io.emit("getFlag", flagType);
+  });
 
   socket.on("disconnect", () => {
     console.log("someone has left");

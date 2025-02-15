@@ -1,24 +1,47 @@
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./race-control.css";
-import { io } from "socket.io-client";
+import { SocketContext } from "../../context/SocketContext";
 
 function RaceControl() {
+  const socket = useContext(SocketContext);
+  const [flagType, setFlagType] = useState("safe");
+
   useEffect(() => {
-    const socket = io("http://localhost:4000");
-  }, []);
+    if (socket) {
+      socket.emit("changeFlag", flagType);
+    }
+  }, [socket, flagType]);
+
+  console.log(flagType);
 
   return (
     <div>
-      <button className="flag-button" id="safe">
+      <button
+        className="flag-button"
+        id="safe"
+        onClick={() => setFlagType("safe")}
+      >
         Safe
       </button>
-      <button className="flag-button" id="hazard">
+      <button
+        className="flag-button"
+        id="hazard"
+        onClick={() => setFlagType("hazard")}
+      >
         Hazard
       </button>
-      <button className="flag-button" id="danger">
+      <button
+        className="flag-button"
+        id="danger"
+        onClick={() => setFlagType("danger")}
+      >
         Danger
       </button>
-      <button className="flag-button" id="finish">
+      <button
+        className="flag-button"
+        id="finish"
+        onClick={() => setFlagType("finish")}
+      >
         Finish
       </button>
     </div>

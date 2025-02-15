@@ -1,10 +1,26 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./race-flags.css";
+import { SocketContext } from "../../context/SocketContext";
 
 function RaceFlags() {
-  // const [flag, setFlag] = useState("green");
+  const socket = useContext(SocketContext);
+  const [flag, setFlag] = useState("safe");
 
-  return <div id="flag" style={{ backgroundColor: "green" }}></div>;
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleFlagChange = (flagType) => {
+      setFlag(flagType);
+    };
+
+    socket.on("getFlag", handleFlagChange);
+
+    return () => {
+      socket.off("getFlag", handleFlagChange);
+    };
+  }, [socket]);
+
+  return <div id={flag}></div>;
 }
 
 export default RaceFlags;
